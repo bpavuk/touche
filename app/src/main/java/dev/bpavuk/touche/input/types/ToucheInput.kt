@@ -7,7 +7,11 @@ import androidx.compose.ui.input.pointer.PointerType
 sealed interface ToucheInput {
     val offset: Offset
 
-    data class Stylus(override val offset: Offset, val pressed: Boolean): ToucheInput
+    data class Stylus(
+        override val offset: Offset,
+        val pressed: Boolean,
+        val pressure: Float
+    ): ToucheInput
     data class Finger(override val offset: Offset): ToucheInput
 }
 
@@ -20,7 +24,7 @@ fun ToucheInput.toPointerType(): PointerType {
 
 fun PointerInputChange.toToucheInput(): ToucheInput {
     return when (this.type) {
-        PointerType.Stylus -> ToucheInput.Stylus(position, pressed)
+        PointerType.Stylus -> ToucheInput.Stylus(position, pressed, pressure)
         else -> { ToucheInput.Finger(position) }
     }
 }

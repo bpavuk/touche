@@ -18,7 +18,7 @@ class DummyInputHandler : InputHandler {
             is ToucheInput.Stylus -> {
                 Log.d(
                     TAG,
-                    "${input.toPointerType()}, coords: ${input.offset}, pressed: ${input.pressed}"
+                    "${input.toPointerType()}, coords: ${input.offset}, pressed: ${input.pressed}, pressure: ${input.pressure}"
                 )
             }
         }
