@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "dev.bpavuk.touche"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "dev.bpavuk.touche"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 

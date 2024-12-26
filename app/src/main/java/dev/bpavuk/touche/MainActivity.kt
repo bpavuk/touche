@@ -21,13 +21,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             ToucheTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    // TODO: make it look better
                     Column(
                         modifier = Modifier.padding(innerPadding)
                     ) {
                         Text(
                             text = "Install touche driver, then reconnect your device to the PC",
-                            style = MaterialTheme.typography.displayLarge
+                            style = MaterialTheme.typography.headlineLarge
                         )
                     }
                 }
