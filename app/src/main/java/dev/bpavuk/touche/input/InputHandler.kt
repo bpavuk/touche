@@ -32,15 +32,14 @@ class DummyInputHandler : InputHandler {
 }
 
 class UsbInputHandler(private val connection: UsbConnection) : InputHandler {
+    private fun ToucheInput.compress(): ByteArray = when (this) {
+        is ToucheInput.Finger -> "F${offset.x}\t${offset.y}".toByteArray()
+        is ToucheInput.Stylus -> ("S${offset.x}\t${offset.y}\t"
+                + if (pressed) "1\t${pressure}" else "0").toByteArray()
+    }
+
     override suspend fun pass(input: ToucheInput) {
-        // TODO: work on a better compression algo
-        val data = when (input) {
-            is ToucheInput.Finger -> "fingering X:${input.offset.x} Y:${input.offset.y}"
-            is ToucheInput.Stylus -> "stylus " +
-                    (if (input.pressed) "pressing; pressure: ${input.pressure}"
-                    else "hovering like a fucking Harry Potter on his broom") +
-                    " X:${input.offset.x} Y:${input.offset.y}"
-        }
-        connection.write(data.toByteArray())
+        val data = input.compress()
+        connection.write(data)
     }
 }
