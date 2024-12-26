@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">touche</string>
+    <string name="title_activity_attached">AttachedActivity</string>
+    <string name="title_activity_surface">touche surface</string>
 </resources>

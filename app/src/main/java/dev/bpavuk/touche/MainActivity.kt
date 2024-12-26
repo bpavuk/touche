@@ -4,15 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
-import dev.bpavuk.touche.input.DummyInputHandler
-import dev.bpavuk.touche.input.InputViewModel
-import dev.bpavuk.touche.input.StylusSurface
 import dev.bpavuk.touche.ui.theme.ToucheTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,18 +18,18 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val inputViewModel = InputViewModel(DummyInputHandler())
-
         setContent {
             ToucheTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    StylusSurface(
-                        inputViewModel,
-                        modifier = Modifier
-                            .padding(innerPadding)
-                            .fillMaxSize()
-                            .background(MaterialTheme.colorScheme.background)
-                    )
+                    // TODO: make it look better
+                    Column(
+                        modifier = Modifier.padding(innerPadding)
+                    ) {
+                        Text(
+                            text = "Install touche driver, then reconnect your device to the PC",
+                            style = MaterialTheme.typography.displayLarge
+                        )
+                    }
                 }
             }
         }
