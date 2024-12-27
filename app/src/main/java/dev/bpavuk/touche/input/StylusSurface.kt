@@ -12,10 +12,7 @@ fun StylusSurface(viewModel: InputViewModel, modifier: Modifier = Modifier) {
             this.awaitPointerEventScope {
                 while (true) {
                     val event = awaitPointerEvent()
-                    event.changes.forEach {
-                        viewModel.pass(it)
-                        it.consume()
-                    }
+                    viewModel.pass(event.changes)
                 }
             }
         }

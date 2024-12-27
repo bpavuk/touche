@@ -10,9 +10,12 @@ import kotlinx.coroutines.launch
 class InputViewModel(
     private val handler: InputHandler,
 ) : ViewModel() {
-    fun pass(inputChange: PointerInputChange) {
+    fun pass(inputChange: List<PointerInputChange>) {
         viewModelScope.launch {
-            handler.pass(inputChange.toToucheInput())
+            handler.pass(inputChange.map {
+                it.consume()
+                it.toToucheInput()
+            })
         }
     }
 }
