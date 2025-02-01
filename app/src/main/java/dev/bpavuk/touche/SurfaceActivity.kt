@@ -40,8 +40,8 @@ class SurfaceActivity : ComponentActivity() {
 
         if (intent.action != UsbManager.ACTION_USB_ACCESSORY_ATTACHED) finish()
         val usbManager = getSystemService(Context.USB_SERVICE) as UsbManager
-        val accessory = (intent.getParcelableExtra(UsbManager.EXTRA_ACCESSORY) as? UsbAccessory)
-            ?: let {
+        val accessory =
+            (intent.getParcelableExtra(UsbManager.EXTRA_ACCESSORY) as? UsbAccessory) ?: let {
                 finish()
                 return
             }

@@ -16,8 +16,7 @@ import java.io.IOException
 const val TAG = "Usb"
 
 class UsbConnection(
-    private val accessory: UsbAccessory,
-    private val manager: UsbManager
+    private val accessory: UsbAccessory, private val manager: UsbManager
 ) {
     private var fileDescriptor: ParcelFileDescriptor? = null
     private var inputStream: FileInputStream? = null
@@ -52,15 +51,13 @@ class UsbConnection(
 
     suspend fun write(b: Int) {
         withContext(Dispatchers.IO) {
-            outputStream?.write(b)
-                ?: throw IOException("Attempt to write to closed USB connection")
+            outputStream?.write(b) ?: throw IOException("Attempt to write to closed USB connection")
         }
     }
 
     suspend fun write(b: ByteArray) {
         withContext(Dispatchers.IO) {
-            outputStream?.write(b)
-                ?: throw IOException("Attempt to write to closed USB connection")
+            outputStream?.write(b) ?: throw IOException("Attempt to write to closed USB connection")
         }
     }
 
@@ -74,10 +71,12 @@ class UsbConnection(
 
 class UsbDisconnectBroadcastReceiver(
     private val onDisconnect: (Context?, Intent?) -> Unit
-): BroadcastReceiver() {
+) : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        if (intent?.action == UsbManager.ACTION_USB_ACCESSORY_DETACHED)
-            onDisconnect(context, intent)
+        if (intent?.action == UsbManager.ACTION_USB_ACCESSORY_DETACHED) onDisconnect(
+            context,
+            intent
+        )
         else Log.d(TAG, "unreceived action")
     }
 }
