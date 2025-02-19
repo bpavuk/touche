@@ -9,23 +9,22 @@ interface InputHandler {
 
 class UsbInputHandler(private val connection: UsbConnection) : InputHandler {
     private fun List<ToucheInput>.compress(): ByteArray = (
-            "${this.first().screenSize.x}\t${this.first().screenSize.y}\n"
-                    + joinToString("\n") {
+            joinToString("\n") {
                 when (it) {
                     is ToucheInput.Finger -> buildString {
-                            append("F\t")
-                            append("${it.offset.x}\t")
-                            append("${it.offset.y}\t")
-                            append(if (it.pressed) "1\t" else "0\t")
-                            append(it.id.value)
-                        }
+                        append("F\t")
+                        append("${it.offset.x * 4096 / it.screenSize.x}\t")
+                        append("${it.offset.y * 4096 / it.screenSize.y}\t")
+                        append(if (it.pressed) "1\t" else "0\t")
+                        append(it.id.value)
+                    }
 
                     is ToucheInput.Stylus -> buildString {
-                            append("S\t")
-                            append("${it.offset.x}\t")
-                            append("${it.offset.y}\t")
-                            append(if (it.pressed) "1\t${it.pressure}" else "0")
-                        }
+                        append("S\t")
+                        append("${it.offset.x * 4096 / it.screenSize.x}\t")
+                        append("${it.offset.y * 4096 / it.screenSize.y}\t")
+                        append(if (it.pressed) "1\t${it.pressure}" else "0")
+                    }
                 }
             }
             ).toByteArray()
