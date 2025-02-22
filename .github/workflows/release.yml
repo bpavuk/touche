@@ -30,4 +30,4 @@ jobs:
         shell: bash
         run: |
           gh release upload ${{ github.event.release.tag_name }} \
-          ./app/build/outputs/apk/release/app-release-unsigned.apk ./app/build/outputs/apk/release/output-metadata.json
+          ./app/build/outputs/apk/release/app-release-unsigned.apk
