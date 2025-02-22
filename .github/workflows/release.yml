@@ -8,6 +8,8 @@ jobs:
   release:
     name: Release - Android
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
