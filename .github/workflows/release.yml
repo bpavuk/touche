@@ -28,8 +28,20 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew assembleRelease --no-daemon
 
+      - name: Sign the APK
+        uses: r0adkll/sign-android-release@v1
+        id: sign_app
+        with:
+          releaseDirectory: app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "35.0.1"
+
       - name: Publish to GitHub
         shell: bash
         run: |
           gh release upload ${{ github.event.release.tag_name }} \
-          ./app/build/outputs/apk/release/app-release-unsigned.apk
+          ${{steps.sign_app.outputs.signedReleaseFile}}
