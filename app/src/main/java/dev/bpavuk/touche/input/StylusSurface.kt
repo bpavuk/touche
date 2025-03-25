@@ -7,7 +7,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.toSize
-import dev.bpavuk.touche.input.types.ScreenSize
+import dev.bpavuk.touche.input.types.ToucheScreenSize
 
 @Composable
 fun StylusSurface(viewModel: InputViewModel, modifier: Modifier = Modifier) {
@@ -16,6 +16,7 @@ fun StylusSurface(viewModel: InputViewModel, modifier: Modifier = Modifier) {
     Box(modifier then Modifier
         .onGloballyPositioned {
             size = it.size
+            viewModel.setScreenState(it.size)
         }
         .pointerInput(Unit) {
             this.awaitPointerEventScope {
@@ -23,7 +24,7 @@ fun StylusSurface(viewModel: InputViewModel, modifier: Modifier = Modifier) {
                     val event = awaitPointerEvent()
                     viewModel.pass(event.changes,
                         size.toSize()
-                            .run { ScreenSize((width).toInt(), (height).toInt()) })
+                            .run { ToucheScreenSize((width).toInt(), (height).toInt()) })
                 }
             }
         }

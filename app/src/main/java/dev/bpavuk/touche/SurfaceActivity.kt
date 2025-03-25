@@ -10,15 +10,18 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import dev.bpavuk.touche.input.InputViewModel
 import dev.bpavuk.touche.input.StylusSurface
-import dev.bpavuk.touche.input.UsbInputHandler
+import dev.bpavuk.touche.input.WatcherViewModel
 import dev.bpavuk.touche.ui.theme.ToucheTheme
 import dev.bpavuk.touche.usb.UsbConnection
 import dev.bpavuk.touche.usb.UsbDisconnectBroadcastReceiver
@@ -34,6 +37,15 @@ class SurfaceActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        WindowInsetsControllerCompat(window, window.decorView).let { controller ->
+            controller.hide(WindowInsetsCompat.Type.statusBars())
+            controller.hide(WindowInsetsCompat.Type.captionBar())
+            controller.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
+
         Log.d(TAG, "intent:")
         Log.d(TAG, "\taction: ${intent.action}")
         Log.d(TAG, "\ttype: ${intent.type}")
@@ -47,7 +59,9 @@ class SurfaceActivity : ComponentActivity() {
             }
 
         connection = UsbConnection(accessory, usbManager).apply { open() }
-        val inputViewModel = InputViewModel(UsbInputHandler(connection!!))
+        val inputViewModel = InputViewModel(
+            WatcherViewModel(connection!!)
+        )
 
         ContextCompat.registerReceiver(
             this,
@@ -58,11 +72,13 @@ class SurfaceActivity : ComponentActivity() {
 
         setContent {
             ToucheTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Box(Modifier
+                     .background(Color.Black)
+                     .navigationBarsPadding()
+                ) {
                     StylusSurface(
                         inputViewModel,
                         modifier = Modifier
-                            .padding(innerPadding)
                             .fillMaxSize()
                             .background(Color.Black)
                     )
