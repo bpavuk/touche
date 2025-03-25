@@ -12,8 +12,8 @@ android {
         applicationId = "dev.bpavuk.touche"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
-        versionName = "0.1"
+        versionCode = 2
+        versionName = "0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -22,8 +22,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
 
@@ -31,6 +30,7 @@ android {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-dbg"
             isDebuggable = true
+            isProfileable = true
         }
     }
     compileOptions {
