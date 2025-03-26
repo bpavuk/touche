@@ -18,11 +18,11 @@ class InputViewModel(
         watcher.watch()
     }
 
-    fun pass(inputChange: List<PointerInputChange>, screenSize: ToucheScreenSize) {
+    fun pass(inputChange: List<PointerInputChange>) {
         viewModelScope.launch {
             watcher.pass(inputChange.map {
                 it.consume()
-                it.toToucheInput(screenSize)
+                it.toToucheInput()
             })
         }
     }
@@ -33,14 +33,14 @@ class InputViewModel(
     }
 }
 
-fun PointerInputChange.toToucheInput(screenSize: ToucheScreenSize): ToucheInput {
+fun PointerInputChange.toToucheInput(): ToucheInput {
     return when (this.type) {
         PointerType.Stylus -> ToucheInput.Stylus(
-            position, pressed, pressure, screenSize
+            position, pressed, pressure
         )
 
         PointerType.Touch -> {
-            ToucheInput.Finger(position, pressed, screenSize, id)
+            ToucheInput.Finger(position, pressed, id)
         }
 
         else -> throw IllegalStateException()
