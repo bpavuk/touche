@@ -28,8 +28,10 @@ class InputViewModel(
     }
 
     fun setScreenState(screenSize: IntSize) {
-        watcher.setScreenState(
-            screenSize.toSize().run { ToucheScreenSize((width).toInt(), (height).toInt()) })
+        viewModelScope.launch {
+            watcher.setScreenState(
+                screenSize.toSize().run { ToucheScreenSize((width).toInt(), (height).toInt()) })
+        }
     }
 }
 
