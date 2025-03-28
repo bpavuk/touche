@@ -64,21 +64,6 @@ class UsbConnection(
         }
     }
 
-    fun readBlocking(): Int {
-        return inputStream?.read()
-            ?: throw IOException("Attempt to read from closed USB connection")
-    }
-
-    fun readBlocking(b: ByteArray): Int {
-        return inputStream?.read(b)
-            ?: throw IOException("Attempt to read from closed USB connection")
-    }
-
-    fun readBytesBlocking(): ByteArray {
-        return inputStream?.readBytes()
-            ?: throw IOException("Attempt to read from closed USB connection")
-    }
-
     suspend fun write(b: Int) {
         withContext(Dispatchers.IO) {
             outputStream?.write(b) ?: throw IOException("Attempt to write to closed USB connection")
@@ -96,19 +81,6 @@ class UsbConnection(
             outputStream?.write(b, off, len)
                 ?: throw IOException("Attempt to write to closed USB connection")
         }
-    }
-
-    fun writeBlocking(b: Int) {
-        outputStream?.write(b) ?: throw IOException("Attempt to write to closed USB connection")
-    }
-
-    fun writeBlocking(b: ByteArray) {
-        outputStream?.write(b) ?: throw IOException("Attempt to write to closed USB connection")
-    }
-
-    fun writeBlocking(b: ByteArray, off: Int, len: Int) {
-        outputStream?.write(b, off, len)
-            ?: throw IOException("Attempt to write to closed USB connection")
     }
 }
 

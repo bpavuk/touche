@@ -5,13 +5,11 @@ import androidx.compose.ui.input.pointer.PointerId
 
 sealed interface ToucheInput : ToucheData {
     val offset: Offset
-    val screenSize: ToucheScreenSize
 
     data class Stylus(
         override val offset: Offset,
         val pressed: Boolean,
         val pressure: Float,
-        override val screenSize: ToucheScreenSize
     ) : ToucheInput {
         override fun encode(): ByteArray = buildString {
             append("S\t")
@@ -24,7 +22,6 @@ sealed interface ToucheInput : ToucheData {
     data class Finger(
         override val offset: Offset,
         val pressed: Boolean,
-        override val screenSize: ToucheScreenSize,
         val id: PointerId
     ) : ToucheInput {
         override fun encode(): ByteArray = buildString {
