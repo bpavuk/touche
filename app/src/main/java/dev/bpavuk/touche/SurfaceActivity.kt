@@ -21,10 +21,10 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import dev.bpavuk.touche.input.InputViewModel
 import dev.bpavuk.touche.input.StylusSurface
-import dev.bpavuk.touche.input.WatcherViewModel
+import dev.bpavuk.touche.connectivity.WatcherViewModel
 import dev.bpavuk.touche.ui.theme.ToucheTheme
-import dev.bpavuk.touche.usb.UsbConnection
-import dev.bpavuk.touche.usb.UsbDisconnectBroadcastReceiver
+import dev.bpavuk.touche.connectivity.usb.UsbConnection
+import dev.bpavuk.touche.connectivity.usb.UsbDisconnectBroadcastReceiver
 
 const val TAG = "Surface"
 

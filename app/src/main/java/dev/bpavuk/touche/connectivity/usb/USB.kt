@@ -1,4 +1,4 @@
-package dev.bpavuk.touche.usb
+package dev.bpavuk.touche.connectivity.usb
 
 import android.content.BroadcastReceiver
 import android.content.Context

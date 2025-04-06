@@ -1,4 +1,4 @@
-package dev.bpavuk.touche.input.types
+package dev.bpavuk.touche.types
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.PointerId
@@ -11,12 +11,12 @@ sealed interface ToucheInput : ToucheData {
         val pressed: Boolean,
         val pressure: Float,
     ) : ToucheInput {
-        override fun encode(): ByteArray = buildString {
+        override fun encode(): String = buildString {
             append("S\t")
             append("${offset.x}\t")
             append("${offset.y}\t")
             append(if (pressed) "1\t${pressure}" else "0")
-        }.encodeToByteArray()
+        }
     }
 
     data class Finger(
@@ -24,12 +24,14 @@ sealed interface ToucheInput : ToucheData {
         val pressed: Boolean,
         val id: PointerId
     ) : ToucheInput {
-        override fun encode(): ByteArray = buildString {
-            append("F\t")
-            append("${offset.x}\t")
-            append("${offset.y}\t")
-            append(if (pressed) "1\t" else "0\t")
-            append(id.value)
-        }.encodeToByteArray()
+        override fun encode(): String {
+            return buildString {
+                append("F\t")
+                append("${offset.x}\t")
+                append("${offset.y}\t")
+                append(if (pressed) "1\t" else "0\t")
+                append(id.value)
+            }
+        }
     }
 }

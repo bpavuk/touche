@@ -6,8 +6,9 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.toSize
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dev.bpavuk.touche.input.types.ToucheScreenSize
-import dev.bpavuk.touche.input.types.ToucheInput
+import dev.bpavuk.touche.connectivity.WatcherViewModel
+import dev.bpavuk.touche.types.ToucheScreenSize
+import dev.bpavuk.touche.types.ToucheInput
 import kotlinx.coroutines.launch
 
 
@@ -21,8 +22,9 @@ class InputViewModel(
     fun pass(inputChange: List<PointerInputChange>) {
         viewModelScope.launch {
             watcher.pass(inputChange.map {
+                val input = it.toToucheInput()
                 it.consume()
-                it.toToucheInput()
+                input
             })
         }
     }
