@@ -1,52 +1,52 @@
 package dev.bpavuk.touche.input
 
+import androidx.compose.material3.TimePicker
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.PointerType
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.toSize
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import dev.bpavuk.touche.connectivity.WatcherViewModel
-import dev.bpavuk.touche.types.ToucheScreenSize
-import dev.bpavuk.touche.types.ToucheInput
+import dev.bpavuk.touche.data.ToucheRepository
+import dev.bpavuk.touche.data.model.ToucheInput
 import kotlinx.coroutines.launch
 
 
 class InputViewModel(
-    private val watcher: WatcherViewModel,
+    private val client: ToucheRepository
 ) : ViewModel() {
-    init {
-        watcher.watch()
-    }
-
-    fun pass(inputChange: List<PointerInputChange>) {
+    fun sendPointerEvent(inputChange: List<PointerInputChange>) {
         viewModelScope.launch {
-            watcher.pass(inputChange.map {
+            client.sendEvents(inputChange.mapNotNull {
                 val input = it.toToucheInput()
-                it.consume()
+                if (input != null) it.consume()
                 input
             })
         }
     }
 
-    fun setScreenState(screenSize: IntSize) {
+    fun sendScreenEvent(screenSize: IntSize) {
         viewModelScope.launch {
-            watcher.setScreenState(
-                screenSize.toSize().run { ToucheScreenSize((width).toInt(), (height).toInt()) })
+            client.sendEvent(ToucheInput.Action.Init)
+            client.sendEvent(screenSize.toToucheInput())
         }
     }
-}
 
-fun PointerInputChange.toToucheInput(): ToucheInput {
-    return when (this.type) {
-        PointerType.Stylus -> ToucheInput.Stylus(
-            position, pressed, pressure
-        )
+    private fun IntSize.toToucheInput(): ToucheInput =
+        toSize().run { ToucheInput.Screen((width).toInt(), (height).toInt()) }
 
-        PointerType.Touch -> {
-            ToucheInput.Finger(position, pressed, id)
+    private fun PointerInputChange.toToucheInput(): ToucheInput? {
+        return when (this.type) {
+            PointerType.Stylus -> ToucheInput.Stylus(
+                position.x.toInt(), position.y.toInt(), pressed, pressure
+            )
+
+            PointerType.Touch -> {
+                ToucheInput.Finger(position.x.toInt(), position.y.toInt(), pressed, id.value)
+            }
+
+            else -> null
         }
-
-        else -> throw IllegalStateException()
     }
 }
