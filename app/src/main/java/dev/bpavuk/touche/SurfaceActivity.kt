@@ -20,10 +20,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.ViewModelProvider
 import dev.bpavuk.touche.input.InputViewModel
 import dev.bpavuk.touche.ui.StylusSurface
 import dev.bpavuk.touche.data.ToucheRepositoryImpl
 import dev.bpavuk.touche.data.UsbConnection
+import dev.bpavuk.touche.data.UsbConnectionViewModel
 import dev.bpavuk.touche.data.UsbDisconnectBroadcastReceiver
 import dev.bpavuk.touche.ui.theme.ToucheTheme
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -31,7 +33,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 const val TAG = "Surface"
 
 class SurfaceActivity : ComponentActivity() {
-    private lateinit var connection: UsbConnection
     private val usbDisconnectReceiver = UsbDisconnectBroadcastReceiver { _, _ ->
         finish()
     }
@@ -53,19 +54,18 @@ class SurfaceActivity : ComponentActivity() {
         Log.d(TAG, "\taction: ${intent.action}")
         Log.d(TAG, "\ttype: ${intent.type}")
 
-        if (intent.action != UsbManager.ACTION_USB_ACCESSORY_ATTACHED) finish()
-        val usbManager = getSystemService(USB_SERVICE) as UsbManager
-        val accessory = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(UsbManager.EXTRA_ACCESSORY, UsbAccessory::class.java)
-        } else {
-            (intent.getParcelableExtra(UsbManager.EXTRA_ACCESSORY) as? UsbAccessory)
-        } ?: let {
-            Log.d(TAG, "Did not receive the USB accessory!")
+        val usbVm = try {
+            ViewModelProvider(
+                owner = this,
+                factory = UsbConnectionViewModel.factoryFrom(this)
+            ).get(UsbConnectionViewModel::class.java)
+        } catch (e: IllegalStateException) {
+            Log.d(TAG, "USB VM creation failed: ${e.message}")
             finish()
             return
         }
+        val connection = usbVm.connection
 
-        connection = UsbConnection(accessory, usbManager).apply { open() }
         val inputViewModel = InputViewModel(
             ToucheRepositoryImpl(connection)
         )
@@ -96,8 +96,6 @@ class SurfaceActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-
-        connection.close()
         unregisterReceiver(usbDisconnectReceiver)
     }
 }
