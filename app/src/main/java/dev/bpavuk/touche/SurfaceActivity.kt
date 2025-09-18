@@ -27,6 +27,7 @@ import dev.bpavuk.touche.data.ToucheRepositoryImpl
 import dev.bpavuk.touche.data.UsbConnection
 import dev.bpavuk.touche.data.UsbConnectionViewModel
 import dev.bpavuk.touche.data.UsbDisconnectBroadcastReceiver
+import dev.bpavuk.touche.input.InputViewModelImpl
 import dev.bpavuk.touche.ui.theme.ToucheTheme
 import kotlinx.serialization.ExperimentalSerializationApi
 
@@ -66,7 +67,7 @@ class SurfaceActivity : ComponentActivity() {
         }
         val connection = usbVm.connection
 
-        val inputViewModel = InputViewModel(
+        val inputViewModel: InputViewModel = InputViewModelImpl(
             ToucheRepositoryImpl(connection)
         )
 

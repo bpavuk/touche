@@ -12,11 +12,15 @@ import dev.bpavuk.touche.data.ToucheRepository
 import dev.bpavuk.touche.data.model.ToucheInput
 import kotlinx.coroutines.launch
 
+interface InputViewModel {
+    fun sendPointerEvent(inputChange: List<PointerInputChange>)
+    fun sendScreenEvent(screenSize: IntSize)
+}
 
-class InputViewModel(
+class InputViewModelImpl(
     private val client: ToucheRepository
-) : ViewModel() {
-    fun sendPointerEvent(inputChange: List<PointerInputChange>) {
+) : InputViewModel, ViewModel() {
+    override fun sendPointerEvent(inputChange: List<PointerInputChange>) {
         viewModelScope.launch {
             client.sendEvents(inputChange.mapNotNull {
                 val input = it.toToucheInput()
@@ -26,7 +30,7 @@ class InputViewModel(
         }
     }
 
-    fun sendScreenEvent(screenSize: IntSize) {
+    override fun sendScreenEvent(screenSize: IntSize) {
         viewModelScope.launch {
             client.sendEvent(ToucheInput.Action.Init)
             client.sendEvent(screenSize.toToucheInput())
