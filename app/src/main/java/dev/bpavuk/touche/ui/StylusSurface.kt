@@ -18,8 +18,8 @@ import dev.bpavuk.touche.ui.theme.ToucheTheme
 
 @Composable
 fun StylusSurface(viewModel: InputViewModel, modifier: Modifier = Modifier) {
-    Box(
-        modifier then Modifier.onGloballyPositioned {
+    Box(modifier then Modifier
+        .onGloballyPositioned {
             viewModel.sendScreenEvent(it.size)
         }
         .pointerInput(Unit) {
@@ -29,8 +29,7 @@ fun StylusSurface(viewModel: InputViewModel, modifier: Modifier = Modifier) {
                     viewModel.sendPointerEvent(event.changes)
                 }
             }
-        }
-    ) {
+        }) {
         Cloudy(Modifier.fillMaxSize())
     }
 }
@@ -49,6 +48,10 @@ fun StylusSurfacePreview() {
         }
     }
     ToucheTheme {
-        StylusSurface(dumbViewModel, modifier = Modifier.fillMaxSize().background(Color.Black))
+        StylusSurface(
+            dumbViewModel, modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black)
+        )
     }
 }
