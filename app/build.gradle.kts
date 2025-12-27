@@ -7,6 +7,10 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
+val appName = "touche"
+val versionName = "0.3"
+val versionCode = 3
+
 android {
     namespace = "dev.bpavuk.touche"
     compileSdk = 36
@@ -15,14 +19,15 @@ android {
         applicationId = "dev.bpavuk.touche"
         minSdk = 24
         targetSdk = 36
-        versionCode = 4
-        versionName = "0.3"
+        versionCode = versionCode
+        versionName = versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
+            resValue("string", "app_name", appName)
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
@@ -30,10 +35,10 @@ android {
         }
 
         debug {
+            resValue("string", "app_name", "$appName debug")
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-dbg"
             isDebuggable = true
-            isProfileable = true
         }
     }
     kotlin {
