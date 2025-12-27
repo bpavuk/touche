@@ -13,7 +13,7 @@ import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import androidx.window.core.layout.WindowWidthSizeClass
+import androidx.window.core.layout.WindowSizeClass
 import dev.bpavuk.touche.input.InputViewModel
 import dev.bpavuk.touche.ui.preview.MultiDevicePreview
 import dev.bpavuk.touche.ui.theme.ToucheTheme
@@ -24,12 +24,12 @@ fun Tablet(
     inputViewModel: InputViewModel,
     modifier: Modifier = Modifier
 ) {
-    val widthSizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass
-    val useColumn = when (widthSizeClass) {
-        WindowWidthSizeClass.COMPACT -> true
-        WindowWidthSizeClass.MEDIUM -> true
-        else -> false
-    }
+    val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
+    val useRow = windowSizeClass
+        .isWidthAtLeastBreakpoint(
+            widthDpBreakpoint = WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND
+        )
+
     val surface: @Composable (Modifier) -> Unit = { modifier ->
         StylusSurface(
             viewModel = inputViewModel,
@@ -38,7 +38,24 @@ fun Tablet(
         )
 
     }
-    if (useColumn) {
+
+    if (useRow) {
+        Row(modifier) {
+            surface(Modifier.weight(1f))
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(40.dp)
+            ) {
+                repeat(5) { buttonNumber ->
+                    Button(onClick = {}, modifier = Modifier.weight(1f)) { }
+                    if (buttonNumber < 4) {
+                        Spacer(Modifier.height(12.dp))
+                    }
+                }
+            }
+        }
+    } else {
         Column(modifier) {
             surface(Modifier.weight(1f))
             ButtonGroup(
@@ -46,18 +63,6 @@ fun Tablet(
             ) {
                 repeat(5) {
                     clickableItem(onClick = {}, weight = 1f, label = "")
-                }
-            }
-        }
-    } else {
-        Row(modifier) {
-            surface(Modifier.weight(1f))
-            Column(modifier = Modifier.fillMaxHeight().width(40.dp)) {
-                repeat(5) { buttonNumber ->
-                    Button(onClick = {}, modifier = Modifier.weight(1f)) { }
-                    if (buttonNumber < 4) {
-                        Spacer(Modifier.height(12.dp))
-                    }
                 }
             }
         }
