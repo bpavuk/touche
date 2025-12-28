@@ -25,6 +25,10 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
+
     buildTypes {
         release {
             resValue("string", "app_name", appName)
@@ -51,6 +55,8 @@ android {
 
 dependencies {
 
+    coreLibraryDesugaring(libs.android.desugarJdkLibs)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.appcompat)
@@ -61,6 +67,9 @@ dependencies {
     // Kotlinx Serialization
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.serialization.cbor)
+
+    // Kotlinx Datetime
+    implementation(libs.kotlinx.datetime)
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))
