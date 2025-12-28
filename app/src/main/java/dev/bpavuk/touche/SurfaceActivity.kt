@@ -55,7 +55,7 @@ class SurfaceActivity : ComponentActivity() {
             ViewModelProvider(
                 owner = this,
                 factory = UsbConnectionViewModel.factoryFrom(this)
-            ).get(UsbConnectionViewModel::class.java)
+            )[UsbConnectionViewModel::class.java]
         } catch (e: IllegalStateException) {
             Log.d(TAG, "USB VM creation failed: ${e.message}")
             finish()
