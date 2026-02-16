@@ -18,17 +18,21 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.retain.retain
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.ui.NavDisplay
 import dev.bpavuk.touche.R
 import dev.bpavuk.touche.ui.theme.ToucheTheme
+import dev.bpavuk.touche.ui.theme.forwardMovementSpec
+import dev.bpavuk.touche.ui.theme.popMovementSpec
+import dev.bpavuk.touche.ui.theme.predictivePopMovementSpec
+import kotlinx.serialization.Serializable
 
 @Composable
 fun OnboardingArtWelcome(modifier: Modifier = Modifier) {
@@ -136,10 +140,13 @@ private fun DriverPreview() {
     }
 }
 
-sealed interface OnboardingScreenState {
-    data object Welcome : OnboardingScreenState
-    data object Driver : OnboardingScreenState
-}
+private sealed interface OnboardingRoute : NavKey
+
+@Serializable
+private data object WelcomeRoute : OnboardingRoute
+
+@Serializable
+private data object DriverRoute : OnboardingRoute
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -148,6 +155,8 @@ fun OnboardingScreen(
     onDriverDownload: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val backStack = rememberNavBackStack(WelcomeRoute)
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -158,22 +167,33 @@ fun OnboardingScreen(
         },
         modifier = modifier
     ) { paddingValues ->
-        Box(modifier = Modifier.padding(paddingValues)) {
-            var state: OnboardingScreenState by retain {
-                mutableStateOf(OnboardingScreenState.Welcome)
-            }
+        NavDisplay(
+            backStack = backStack,
+            onBack = { backStack.removeLastOrNull() },
+            transitionSpec = forwardMovementSpec,
+            popTransitionSpec = popMovementSpec,
+            predictivePopTransitionSpec = predictivePopMovementSpec,
+            entryProvider = entryProvider {
+                entry<WelcomeRoute> {
+                    Welcome(
+                        onCompletion = { backStack.add(DriverRoute) },
+                        modifier = Modifier.background(MaterialTheme.colorScheme.background)
+                    )
+                }
 
-            when (state) {
-                OnboardingScreenState.Welcome -> Welcome(onCompletion = {
-                    state = OnboardingScreenState.Driver
-                })
-
-                OnboardingScreenState.Driver -> Driver(
-                    onCompletion,
-                    downloadDriver = onDriverDownload
-                )
-            }
-        }
+                entry<DriverRoute> {
+                    Driver(
+                        onCompletion = onCompletion,
+                        downloadDriver = onDriverDownload,
+                        modifier = Modifier.background(MaterialTheme.colorScheme.background)
+                    )
+                }
+            },
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
+                .padding(paddingValues)
+                .fillMaxSize(),
+        )
     }
 }
 
