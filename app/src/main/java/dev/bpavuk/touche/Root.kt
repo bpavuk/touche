@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -15,6 +16,7 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import dev.bpavuk.touche.data.persistence.OnboardingRepository
 import dev.bpavuk.touche.logic.settings.ScreensaverSettingsViewModelImpl
 import dev.bpavuk.touche.logic.settings.StylusSettingsViewModelImpl
 import dev.bpavuk.touche.logic.settings.TouchpadSettingsViewModelImpl
@@ -30,7 +32,9 @@ import dev.bpavuk.touche.ui.theme.ToucheTheme
 import dev.bpavuk.touche.ui.theme.forwardMovementSpec
 import dev.bpavuk.touche.ui.theme.popMovementSpec
 import dev.bpavuk.touche.ui.theme.predictivePopMovementSpec
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 private const val DRIVER_REPO_URL = "https://github.com/bpavuk/touche-driver"
@@ -58,15 +62,16 @@ private data object StylusRoute : AppRoute
 @Composable
 fun AppRoot(
     modifier: Modifier = Modifier,
-    forceOnboarding: Boolean = false,
+    onboard: Boolean = false,
 ) {
     val context = LocalContext.current
-    val startRoute: AppRoute = if (forceOnboarding) OnboardingRoute else HomeRoute
+    val startRoute: AppRoute = if (onboard) OnboardingRoute else HomeRoute
     val backStack = rememberNavBackStack(startRoute)
 
     val touchpadViewModel = koinViewModel<TouchpadSettingsViewModelImpl>()
     val screensaverViewModel = koinViewModel<ScreensaverSettingsViewModelImpl>()
     val stylusViewModel = koinViewModel<StylusSettingsViewModelImpl>()
+    val onboardingRepository = koinInject<OnboardingRepository>()
 
     val touchpadEnabled by touchpadViewModel.getTouchpadEnabled().collectAsState(initial = true)
     val stylusEnabled by stylusViewModel.getStylusEnabled().collectAsState(initial = true)
@@ -85,6 +90,8 @@ fun AppRoot(
         }
     }
 
+    val coroutineScope = rememberCoroutineScope()
+
     NavDisplay(
         backStack = backStack,
         onBack = { backStack.removeLastOrNull() },
@@ -95,6 +102,9 @@ fun AppRoot(
             entry<OnboardingRoute> {
                 OnboardingScreen(
                     onCompletion = {
+                        coroutineScope.launch {
+                            onboardingRepository.setOnboardingCompleted(true)
+                        }
                         backStack.clear()
                         backStack.add(HomeRoute)
                     },
@@ -181,7 +191,7 @@ private fun AppRootOnboardingPreview() {
     ToucheTheme(darkTheme = false) {
         AppRoot(
             modifier = Modifier.fillMaxSize(),
-            forceOnboarding = true,
+            onboard = true,
         )
     }
 }

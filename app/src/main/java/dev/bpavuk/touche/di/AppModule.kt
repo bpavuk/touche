@@ -7,6 +7,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import dev.bpavuk.touche.data.ToucheRepository
 import dev.bpavuk.touche.data.ToucheRepositoryImpl
 import dev.bpavuk.touche.data.UsbConnection
+import dev.bpavuk.touche.data.persistence.OnboardingRepository
 import dev.bpavuk.touche.data.persistence.SettingsRepository
 import dev.bpavuk.touche.logic.input.InputViewModelImpl
 import dev.bpavuk.touche.logic.settings.ScreensaverSettingsViewModelImpl
@@ -26,6 +27,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 val appModule = module {
     single { androidContext().dataStore }
     single { SettingsRepository(get()) }
+    single { OnboardingRepository(get()) }
     viewModelOf(::TouchpadSettingsViewModelImpl)
     viewModelOf(::ScreensaverSettingsViewModelImpl)
     viewModelOf(::StylusSettingsViewModelImpl)

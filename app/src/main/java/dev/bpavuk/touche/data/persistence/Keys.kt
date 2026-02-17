@@ -9,3 +9,5 @@ val PREFKEY_SCREENSAVER_ID = stringPreferencesKey("screensaver_id")
 val PREFKEY_TOUCHPAD_ENABLED = booleanPreferencesKey("touchpad_enabled")
 
 val PREFKEY_STYLUS_ENABLED = booleanPreferencesKey("stylus_enabled")
+
+val PREFKEY_ONBOARDING_COMPLETED = booleanPreferencesKey("onboarding_completed")
