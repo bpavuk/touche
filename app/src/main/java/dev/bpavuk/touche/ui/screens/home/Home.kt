@@ -1,7 +1,6 @@
 package dev.bpavuk.touche.ui.screens.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -31,7 +29,6 @@ import dev.bpavuk.touche.ui.theme.ToucheTheme
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
-import kotlin.time.TestTimeSource
 
 @Composable
 fun TimeBasedGreeting(modifier: Modifier = Modifier) {
@@ -45,7 +42,7 @@ fun TimeBasedGreeting(modifier: Modifier = Modifier) {
 
             when (thisTime.hour) {
                 in 6..10 -> "Good morning"
-                in 12..17 -> "Have a great day"
+                in 11..17 -> "Have a great day"
                 in 18..22 -> "Good evening"
                 else -> "What a night, huh?"
             }
