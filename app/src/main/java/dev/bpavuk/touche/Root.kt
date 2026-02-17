@@ -1,5 +1,6 @@
 package dev.bpavuk.touche
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -9,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
@@ -27,6 +29,8 @@ import dev.bpavuk.touche.ui.theme.forwardMovementSpec
 import dev.bpavuk.touche.ui.theme.popMovementSpec
 import dev.bpavuk.touche.ui.theme.predictivePopMovementSpec
 import kotlinx.serialization.Serializable
+
+private const val DRIVER_REPO_URL = "https://github.com/bpavuk/touche-driver"
 
 private sealed interface AppRoute : NavKey
 
@@ -53,6 +57,7 @@ fun AppRoot(
     modifier: Modifier = Modifier,
     forceOnboarding: Boolean = false,
 ) {
+    val context = LocalContext.current
     val startRoute: AppRoute = if (forceOnboarding) OnboardingRoute else HomeRoute
     val backStack = rememberNavBackStack(startRoute)
 
@@ -82,7 +87,13 @@ fun AppRoot(
                         backStack.clear()
                         backStack.add(HomeRoute)
                     },
-                    onDriverDownload = {},
+                    onDriverDownload = {
+                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                            type = "text/plain"
+                            putExtra(Intent.EXTRA_TEXT, DRIVER_REPO_URL)
+                        }
+                        context.startActivity(Intent.createChooser(shareIntent, null))
+                    },
                     modifier = Modifier.fillMaxSize(),
                 )
             }

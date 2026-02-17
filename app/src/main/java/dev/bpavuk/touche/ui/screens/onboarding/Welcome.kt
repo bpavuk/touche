@@ -18,6 +18,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -114,12 +118,27 @@ private fun Driver(
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)) {
-            Button(onClick = downloadDriver) {
-                Text("Download")
+            var driverDownloaded by remember { mutableStateOf(false) }
+            val onDownload = {
+                downloadDriver()
+                driverDownloaded = true
             }
-            Spacer(Modifier.weight(1f))
-            OutlinedButton(onClick = onCompletion) {
-                Text("I'm ready")
+            if (driverDownloaded) {
+                OutlinedButton(onClick = onDownload) {
+                    Text("Download")
+                }
+                Spacer(Modifier.weight(1f))
+                Button(onClick = onCompletion) {
+                    Text("I'm ready")
+                }
+            } else {
+                Button(onClick = onDownload) {
+                    Text("Download")
+                }
+                Spacer(Modifier.weight(1f))
+                OutlinedButton(onClick = onCompletion) {
+                    Text("I'm ready")
+                }
             }
         }
     }
