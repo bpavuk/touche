@@ -14,9 +14,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowSizeClass
-import dev.bpavuk.touche.input.InputViewModel
+import dev.bpavuk.touche.logic.input.InputViewModel
 import dev.bpavuk.touche.ui.preview.MultiDevicePreview
+import dev.bpavuk.touche.ui.screens.settings.Screensaver
+import dev.bpavuk.touche.ui.screens.settings.Screensavers
 import dev.bpavuk.touche.ui.theme.ToucheTheme
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -74,10 +78,30 @@ fun Tablet(
 @Composable
 private fun TabletPreview() {
     val inputViewModel = object : InputViewModel {
-        override fun sendPointerEvent(inputChange: List<PointerInputChange>) {
+        override fun sendPointerEvent(
+            inputChange: List<PointerInputChange>,
+            stylusEnabled: Boolean,
+            touchpadEnabled: Boolean
+        ) {
         }
 
         override fun sendScreenEvent(screenSize: IntSize) {
+        }
+
+        override fun getStylusEnabled(): Flow<Boolean> {
+            return flowOf(true)
+        }
+
+        override fun getTouchpadEnabled(): Flow<Boolean> {
+            return flowOf(true)
+        }
+
+        override fun getScreensaverEnabled(): Flow<Boolean> {
+            return flowOf(true)
+        }
+
+        override fun getScreensaver(): Flow<Screensaver?> {
+            return flowOf(Screensavers.cloudy)
         }
 
     }

@@ -71,6 +71,14 @@ dependencies {
     // Kotlinx Datetime
     implementation(libs.kotlinx.datetime)
 
+    // Preferences DataStore
+    implementation(libs.androidx.datastore.preferences)
+
+    // Koin DI
+    implementation(project.dependencies.platform(libs.koin.bom))
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+
     // Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)

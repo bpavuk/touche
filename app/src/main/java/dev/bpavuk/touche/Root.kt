@@ -5,10 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -16,6 +15,9 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import dev.bpavuk.touche.logic.settings.ScreensaverSettingsViewModelImpl
+import dev.bpavuk.touche.logic.settings.StylusSettingsViewModelImpl
+import dev.bpavuk.touche.logic.settings.TouchpadSettingsViewModelImpl
 import dev.bpavuk.touche.ui.screens.home.HomeScreen
 import dev.bpavuk.touche.ui.screens.onboarding.OnboardingScreen
 import dev.bpavuk.touche.ui.screens.settings.Screensaver
@@ -29,6 +31,7 @@ import dev.bpavuk.touche.ui.theme.forwardMovementSpec
 import dev.bpavuk.touche.ui.theme.popMovementSpec
 import dev.bpavuk.touche.ui.theme.predictivePopMovementSpec
 import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinViewModel
 
 private const val DRIVER_REPO_URL = "https://github.com/bpavuk/touche-driver"
 
@@ -61,10 +64,18 @@ fun AppRoot(
     val startRoute: AppRoute = if (forceOnboarding) OnboardingRoute else HomeRoute
     val backStack = rememberNavBackStack(startRoute)
 
-    var touchpadEnabled by remember { mutableStateOf(true) }
-    var stylusEnabled by remember { mutableStateOf(true) }
-    var screensaverEnabled by remember { mutableStateOf(true) }
-    var currentScreensaver by remember { mutableStateOf(Screensavers.cloudy) }
+    val touchpadViewModel = koinViewModel<TouchpadSettingsViewModelImpl>()
+    val screensaverViewModel = koinViewModel<ScreensaverSettingsViewModelImpl>()
+    val stylusViewModel = koinViewModel<StylusSettingsViewModelImpl>()
+
+    val touchpadEnabled by touchpadViewModel.getTouchpadEnabled().collectAsState(initial = true)
+    val stylusEnabled by stylusViewModel.getStylusEnabled().collectAsState(initial = true)
+    val screensaverEnabled by screensaverViewModel.getScreensaverEnabled().collectAsState(initial = true)
+    val screensaverId by screensaverViewModel.getScreensaverId().collectAsState(initial = Screensavers.cloudy.id)
+
+    val currentScreensaver = remember(screensaverId) {
+        Screensavers.all().find { it.id == screensaverId } ?: Screensavers.cloudy
+    }
 
     val availableScreensavers = remember { Screensavers.all() }
     val screensaverOptions: List<Screensaver> = remember(currentScreensaver, availableScreensavers) {
@@ -118,8 +129,8 @@ fun AppRoot(
             entry<ScreensaverRoute> {
                 ScreensaverSettingsScreen(
                     onBackPressed = { backStack.removeLastOrNull() },
-                    onScreensaverToggle = { screensaverEnabled = it },
-                    onScreensaverChange = { currentScreensaver = it },
+                    onScreensaverToggle = { screensaverViewModel.setScreensaverEnabled(it) },
+                    onScreensaverChange = { screensaverViewModel.setScreensaverId(it.id) },
                     screensaverEnabled = screensaverEnabled,
                     screensaverAnimations = screensaverOptions,
                     modifier = Modifier.fillMaxSize(),
@@ -129,7 +140,7 @@ fun AppRoot(
             entry<TouchpadRoute> {
                 TouchpadScreen(
                     onBackPressed = { backStack.removeLastOrNull() },
-                    onTouchpadToggle = { touchpadEnabled = it },
+                    onTouchpadToggle = { touchpadViewModel.setTouchpadEnabled(it) },
                     touchpadEnabled = touchpadEnabled,
                     modifier = Modifier.fillMaxSize(),
                 )
@@ -138,7 +149,7 @@ fun AppRoot(
             entry<StylusRoute> {
                 StylusScreen(
                     onBackPressed = { backStack.removeLastOrNull() },
-                    onStylusToggle = { stylusEnabled = it },
+                    onStylusToggle = { stylusViewModel.setStylusEnabled(it) },
                     stylusEnabled = stylusEnabled,
                     modifier = Modifier.fillMaxSize(),
                 )

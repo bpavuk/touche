@@ -18,14 +18,15 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.ViewModelProvider
-import dev.bpavuk.touche.data.ToucheRepositoryImpl
 import dev.bpavuk.touche.data.UsbConnectionViewModel
 import dev.bpavuk.touche.data.UsbDisconnectBroadcastReceiver
-import dev.bpavuk.touche.input.InputViewModel
-import dev.bpavuk.touche.input.InputViewModelImpl
+import dev.bpavuk.touche.logic.input.InputViewModel
+import dev.bpavuk.touche.logic.input.InputViewModelImpl
 import dev.bpavuk.touche.ui.StylusSurface
 import dev.bpavuk.touche.ui.theme.ToucheTheme
 import kotlinx.serialization.ExperimentalSerializationApi
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 const val TAG = "Surface"
 
@@ -63,9 +64,7 @@ class SurfaceActivity : ComponentActivity() {
         }
         val connection = usbVm.connection
 
-        val inputViewModel: InputViewModel = InputViewModelImpl(
-            ToucheRepositoryImpl(connection)
-        )
+        val inputViewModel: InputViewModel by viewModel<InputViewModelImpl> { parametersOf(connection) }
 
         ContextCompat.registerReceiver(
             this,
