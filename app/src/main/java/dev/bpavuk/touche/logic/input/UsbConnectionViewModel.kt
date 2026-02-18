@@ -1,4 +1,4 @@
-package dev.bpavuk.touche.data
+package dev.bpavuk.touche.logic.input
 
 import android.app.Activity
 import android.hardware.usb.UsbAccessory
@@ -6,6 +6,7 @@ import android.hardware.usb.UsbManager
 import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import dev.bpavuk.touche.data.UsbConnection
 
 /**
  * ViewModel that owns a UsbConnection so it survives configuration changes.

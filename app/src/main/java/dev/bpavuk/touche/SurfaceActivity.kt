@@ -18,7 +18,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.ViewModelProvider
-import dev.bpavuk.touche.data.UsbConnectionViewModel
+import dev.bpavuk.touche.logic.input.UsbConnectionViewModel
 import dev.bpavuk.touche.data.UsbDisconnectBroadcastReceiver
 import dev.bpavuk.touche.logic.input.InputViewModel
 import dev.bpavuk.touche.logic.input.InputViewModelImpl
