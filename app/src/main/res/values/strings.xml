@@ -2,4 +2,45 @@
     <string name="app_name">touche</string>
     <string name="title_activity_attached">AttachedActivity</string>
     <string name="title_activity_surface">touche surface</string>
+
+    <!-- Common -->
+    <string name="continue_btn">Continue</string>
+    <string name="download">Download</string>
+    <string name="im_ready">I\'m ready</string>
+    <string name="settings">Settings</string>
+
+    <!-- Home screen -->
+    <string name="good_morning">Good morning</string>
+    <string name="have_a_great_day">Have a great day</string>
+    <string name="good_evening">Good evening</string>
+    <string name="what_a_night_huh">What a night, huh?</string>
+    <string name="ready_to_connect">Ready to connect!</string>
+    <string name="make_touche_yours">Make touché yours</string>
+
+    <!-- Onboarding -->
+    <string name="welcome_title">Welcome!</string>
+    <string name="welcome_description">touché is an app that connects your Android device as a graphics tablet and touchpad to your Linux desktop.</string>
+    <string name="desktop_app_required_title">You will need a desktop app</string>
+    <string name="desktop_app_required_description">To use this app, you should pair it with a desktop. Here is the link to download it.</string>
+
+    <!-- Settings -->
+    <string name="screensaver">Screensaver</string>
+    <string name="screensaver_description">An animation displayed when touche is connected</string>
+    <string name="touchpad">Touchpad</string>
+    <string name="touchpad_settings_description">Settings specific to the touchpad functionality</string>
+    <string name="stylus">Stylus</string>
+    <string name="stylus_settings_description">For configuring the stylus / graphics tablet behavior</string>
+
+    <!-- Touchpad screen -->
+    <string name="enable_touchpad_input">Enable touchpad input</string>
+    <string name="touchpad_description">touche lets you use your screen as a touchpad. If you don\'t want that, you can easily turn it off.</string>
+
+    <!-- Stylus screen -->
+    <string name="enable_stylus_input">Enable stylus input</string>
+    <string name="stylus_description">touché lets you use your screen as a graphics tablet. &lt;b&gt;You must have a stylus to use this functionality.&lt;/b&gt; Usually, it\'s S Pen or moto stylus. If you don\'t want that, you can easily turn it off.</string>
+
+    <!-- Screensaver settings -->
+    <string name="enable_screensaver">Enable screensaver</string>
+    <string name="screensaver_settings_description">Display the full-screen animation when touche is active</string>
+    <string name="animations">Animations</string>
 </resources>

@@ -19,12 +19,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
@@ -40,19 +40,17 @@ const val SHARED_TRANSITION_SETTINGS_SCREEN_ID = "settings-screen"
 @Composable
 fun TimeBasedGreeting(modifier: Modifier = Modifier) {
     val text = if (LocalInspectionMode.current) {
-        "Good evening"
+        stringResource(R.string.good_evening)
     } else {
-        remember {
-            val now = Clock.System.now()
-            val systemTZ = TimeZone.currentSystemDefault()
-            val thisTime = now.toLocalDateTime(systemTZ)
+        val now = Clock.System.now()
+        val systemTZ = TimeZone.currentSystemDefault()
+        val thisTime = now.toLocalDateTime(systemTZ)
 
-            when (thisTime.hour) {
-                in 6..10 -> "Good morning"
-                in 11..17 -> "Have a great day"
-                in 18..22 -> "Good evening"
-                else -> "What a night, huh?"
-            }
+        when (thisTime.hour) {
+            in 6..10 -> stringResource(R.string.good_morning)
+            in 11..17 -> stringResource(R.string.have_a_great_day)
+            in 18..22 -> stringResource(R.string.good_evening)
+            else -> stringResource(R.string.what_a_night_huh)
         }
     }
 
@@ -88,7 +86,7 @@ fun ReadyToConnect(modifier: Modifier = Modifier) {
                 .fillMaxWidth()
         )
         Text(
-            text = "Ready to connect!",
+            text = stringResource(R.string.ready_to_connect),
             style = MaterialTheme.typography.headlineSmall
         )
     }
@@ -106,8 +104,8 @@ fun SettingsButton(
         modifier = modifier
     ) {
         Column {
-            Text("Settings", style = MaterialTheme.typography.titleMedium)
-            Text("Make touché yours", style = MaterialTheme.typography.labelMedium)
+            Text(stringResource(R.string.settings), style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.make_touche_yours), style = MaterialTheme.typography.labelMedium)
         }
     }
 }

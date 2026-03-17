@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
@@ -50,7 +51,7 @@ fun SettingsScreen(
         topBar = {
             LargeFlexibleTopAppBar(
                 title = {
-                    Text("Settings") // TODO: replace with string res
+                    Text(stringResource(R.string.settings))
                 },
                 navigationIcon = {
                     BackButton(onBackPressed)
@@ -91,12 +92,12 @@ fun SettingsScreen(
                     ) {
                         Column {
                             Text(
-                                text = "Screensaver",
+                                text = stringResource(R.string.screensaver),
                                 style = MaterialTheme.typography.titleMedium
                             )
                             Spacer(Modifier.size(4.dp))
                             Text(
-                                text = "An animation displayed when touché is connected",
+                                text = stringResource(R.string.screensaver_description),
                                 style = MaterialTheme.typography.labelSmall
                             )
                         }
@@ -122,12 +123,12 @@ fun SettingsScreen(
                     ) {
                         Column {
                             Text(
-                                text = "Touchpad",
+                                text = stringResource(R.string.touchpad),
                                 style = MaterialTheme.typography.titleMedium
                             )
                             Spacer(Modifier.size(4.dp))
                             Text(
-                                text = "Settings specific to the touchpad functionality",
+                                text = stringResource(R.string.touchpad_settings_description),
                                 style = MaterialTheme.typography.labelSmall
                             )
                         }
@@ -159,12 +160,12 @@ fun SettingsScreen(
                     ) {
                         Column {
                             Text(
-                                text = "Stylus",
+                                text = stringResource(R.string.stylus),
                                 style = MaterialTheme.typography.titleMedium
                             )
                             Spacer(Modifier.size(4.dp))
                             Text(
-                                text = "For configuring the stylus / graphics tablet behavior",
+                                text = stringResource(R.string.stylus_settings_description),
                                 style = MaterialTheme.typography.labelSmall
                             )
                         }

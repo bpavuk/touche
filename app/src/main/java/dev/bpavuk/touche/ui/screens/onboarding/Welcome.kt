@@ -67,19 +67,16 @@ private fun Welcome(
                 .weight(1f)
         )
         Column(modifier = Modifier.padding(32.dp)) {
-            Text("Welcome!", style = MaterialTheme.typography.headlineMedium)
+            Text(stringResource(R.string.welcome_title), style = MaterialTheme.typography.headlineMedium)
             Spacer(Modifier.height(16.dp))
-            Text(
-                "touché is an app that connects your Android device as a graphics tablet and " +
-                        "touchpad to your Linux desktop."
-            )
+            Text(stringResource(R.string.welcome_description))
         }
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)) {
             Spacer(Modifier.weight(1f))
             Button(onClick = onCompletion) {
-                Text("Continue")
+                Text(stringResource(R.string.continue_btn))
             }
         }
     }
@@ -110,12 +107,11 @@ private fun Driver(
         )
         Column(modifier = Modifier.padding(32.dp)) {
             Text(
-                text = "You will need a desktop app",
+                text = stringResource(R.string.desktop_app_required_title),
                 style = MaterialTheme.typography.headlineMedium
             )
             Spacer(Modifier.height(16.dp))
-            Text(text = "To use this app, you should pair it with a desktop. " +
-                    "Here is the link to download it.")
+            Text(text = stringResource(R.string.desktop_app_required_description))
         }
         Row(modifier = Modifier
             .fillMaxWidth()
@@ -127,19 +123,19 @@ private fun Driver(
             }
             if (driverDownloaded) {
                 OutlinedButton(onClick = onDownload) {
-                    Text("Download")
+                    Text(stringResource(R.string.download))
                 }
                 Spacer(Modifier.weight(1f))
                 Button(onClick = onCompletion) {
-                    Text("I'm ready")
+                    Text(stringResource(R.string.im_ready))
                 }
             } else {
                 Button(onClick = onDownload) {
-                    Text("Download")
+                    Text(stringResource(R.string.download))
                 }
                 Spacer(Modifier.weight(1f))
                 OutlinedButton(onClick = onCompletion) {
-                    Text("I'm ready")
+                    Text(stringResource(R.string.im_ready))
                 }
             }
         }

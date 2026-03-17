@@ -35,8 +35,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.bpavuk.touche.R
 import dev.bpavuk.touche.ui.components.BackButton
 import dev.bpavuk.touche.ui.surfaces.Cloudy
 import dev.bpavuk.touche.ui.theme.ToucheTheme
@@ -50,7 +52,7 @@ data class Screensaver(
 object Screensavers {
     val cloudy = Screensaver(
         "cloudy",
-        "Cloudy",
+        "Cloudy", // TODO: replace with string resource
         ::Cloudy
     )
 
@@ -88,7 +90,7 @@ fun ScreensaverSettingsScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text("Screensaver")
+                    Text(stringResource(R.string.screensaver))
                 },
                 navigationIcon = {
                     BackButton(onBackPressed)
@@ -131,7 +133,7 @@ fun ScreensaverSettingsScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Enable screensaver",
+                            text = stringResource(R.string.enable_screensaver),
                             style = MaterialTheme.typography.titleMedium
                         )
                         Spacer(
@@ -145,8 +147,13 @@ fun ScreensaverSettingsScreen(
                     }
                     Spacer(Modifier.size(8.dp))
                     Text(
-                        text = "Display the full-screen animation when touché is active",
+                        text = stringResource(R.string.screensaver_settings_description),
                         style = MaterialTheme.typography.labelLarge
+                    )
+                    Spacer(Modifier.size(40.dp))
+                    Text(
+                        text = stringResource(R.string.animations),
+                        style = MaterialTheme.typography.headlineSmall
                     )
                     Spacer(Modifier.size(40.dp))
                     Text(

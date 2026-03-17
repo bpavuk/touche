@@ -27,10 +27,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.bpavuk.touche.R
 import dev.bpavuk.touche.ui.components.BackButton
 import dev.bpavuk.touche.ui.theme.ToucheTheme
 import org.intellij.lang.annotations.Language
@@ -56,7 +58,7 @@ fun StylusScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text("Stylus")
+                    Text(stringResource(R.string.stylus))
                 },
                 navigationIcon = {
                     BackButton(onBackPressed)
@@ -91,7 +93,7 @@ fun StylusScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Enable stylus input",
+                        text = stringResource(R.string.enable_stylus_input),
                         style = MaterialTheme.typography.titleMedium
                     )
                     Spacer(
@@ -107,14 +109,7 @@ fun StylusScreen(
                 Text(
                     text = AnnotatedString.fromHtml(
                         @Language("HTML")
-                        """
-                            <p>
-                                touché lets you use your screen as a graphics tablet.
-                                <b>You must have a stylus to use this functionality.</b>
-                                Usually, it's S Pen or moto stylus. If you don't want that,
-                                you can easily turn it off.
-                            </p>
-                        """.trimIndent()
+                        stringResource(R.string.stylus_description)
                     ),
                     style = MaterialTheme.typography.labelLarge
                 )
