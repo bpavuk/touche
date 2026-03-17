@@ -28,7 +28,9 @@ import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import dev.bpavuk.touche.R
 import dev.bpavuk.touche.ui.components.BackButton
 import dev.bpavuk.touche.ui.components.MenuEntry
+import dev.bpavuk.touche.ui.screens.home.SHARED_TRANSITION_SETTINGS_SCREEN_ID
 import dev.bpavuk.touche.ui.theme.ToucheTheme
+
 
 const val SHARED_TRANSITION_SCREENSAVER_SCREEN_ID = "screensaver-screen"
 const val SHARED_TRANSITION_TOUCHPAD_SCREEN_ID = "touchpad-screen"
@@ -49,16 +51,24 @@ fun SettingsScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            LargeFlexibleTopAppBar(
-                title = {
-                    Text(stringResource(R.string.settings))
-                },
-                navigationIcon = {
-                    BackButton(onBackPressed)
-                },
-                expandedHeight = 200.dp,
-                scrollBehavior = scrollBehavior
-            )
+            with(sharedTransitionScope) {
+                LargeFlexibleTopAppBar(
+                    title = {
+                        Text(stringResource(R.string.settings))
+                    },
+                    navigationIcon = {
+                        BackButton(onBackPressed)
+                    },
+                    expandedHeight = 200.dp,
+                    scrollBehavior = scrollBehavior,
+                    modifier = Modifier.sharedBounds(
+                        sharedContentState = rememberSharedContentState(
+                            key = SHARED_TRANSITION_SETTINGS_SCREEN_ID
+                        ),
+                        animatedVisibilityScope = LocalNavAnimatedContentScope.current
+                    )
+                )
+            }
         }
     ) { paddingValues ->
         LazyColumn(

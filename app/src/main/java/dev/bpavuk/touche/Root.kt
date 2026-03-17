@@ -148,15 +148,7 @@ fun AppRoot(
                         navigateToTouchpad = { backStack.add(TouchpadRoute) },
                         navigateToStylus = { backStack.add(StylusRoute) },
                         sharedTransitionScope = this@SharedTransitionLayout,
-                        modifier = Modifier
-                            .sharedBounds(
-                                sharedContentState = rememberSharedContentState(
-                                    SHARED_TRANSITION_SETTINGS_SCREEN_ID
-                                ),
-                                animatedVisibilityScope = LocalNavAnimatedContentScope.current,
-                                resizeMode = SharedTransitionScope.ResizeMode.scaleToBounds()
-                            )
-                            .fillMaxSize(),
+                        modifier = Modifier.fillMaxSize(),
                     )
                 }
 
@@ -169,13 +161,6 @@ fun AppRoot(
                         screensaverAnimations = screensaverOptions,
                         sharedTransitionScope = this@SharedTransitionLayout,
                         modifier = Modifier
-                            .sharedBounds(
-                                sharedContentState = rememberSharedContentState(
-                                    SHARED_TRANSITION_SCREENSAVER_SCREEN_ID
-                                ),
-                                animatedVisibilityScope = LocalNavAnimatedContentScope.current,
-                                resizeMode = SharedTransitionScope.ResizeMode.scaleToBounds()
-                            )
                             .fillMaxSize(),
                     )
                 }
@@ -187,13 +172,6 @@ fun AppRoot(
                         touchpadEnabled = touchpadEnabled,
                         sharedTransitionScope = this@SharedTransitionLayout,
                         modifier = Modifier
-                            .sharedBounds(
-                                sharedContentState = rememberSharedContentState(
-                                    SHARED_TRANSITION_TOUCHPAD_SCREEN_ID
-                                ),
-                                animatedVisibilityScope = LocalNavAnimatedContentScope.current,
-                                resizeMode = SharedTransitionScope.ResizeMode.scaleToBounds()
-                            )
                             .fillMaxSize(),
                     )
                 }
@@ -205,13 +183,6 @@ fun AppRoot(
                         stylusEnabled = stylusEnabled,
                         sharedTransitionScope = this@SharedTransitionLayout,
                         modifier = Modifier
-                            .sharedBounds(
-                                sharedContentState = rememberSharedContentState(
-                                    SHARED_TRANSITION_STYLUS_SCREEN_ID
-                                ),
-                                animatedVisibilityScope = LocalNavAnimatedContentScope.current,
-                                resizeMode = SharedTransitionScope.ResizeMode.scaleToBounds()
-                            )
                             .fillMaxSize(),
                     )
                 }

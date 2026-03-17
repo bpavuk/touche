@@ -32,8 +32,10 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import dev.bpavuk.touche.R
 import dev.bpavuk.touche.ui.components.BackButton
+import dev.bpavuk.touche.ui.screens.settings.SHARED_TRANSITION_STYLUS_SCREEN_ID
 import dev.bpavuk.touche.ui.theme.ToucheTheme
 import org.intellij.lang.annotations.Language
 
@@ -56,14 +58,22 @@ fun StylusScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(stringResource(R.string.stylus))
-                },
-                navigationIcon = {
-                    BackButton(onBackPressed)
-                }
-            )
+            with(sharedTransitionScope) {
+                TopAppBar(
+                    title = {
+                        Text(stringResource(R.string.stylus))
+                    },
+                    navigationIcon = {
+                        BackButton(onBackPressed)
+                    },
+                    modifier = Modifier.sharedBounds(
+                        sharedContentState = rememberSharedContentState(
+                            key = SHARED_TRANSITION_STYLUS_SCREEN_ID
+                        ),
+                        animatedVisibilityScope = LocalNavAnimatedContentScope.current
+                    )
+                )
+            }
         }
     ) { paddingValues ->
         Row(modifier = Modifier.fillMaxSize().padding(paddingValues)) {

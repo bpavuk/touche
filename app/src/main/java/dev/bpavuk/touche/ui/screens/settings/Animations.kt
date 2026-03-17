@@ -1,4 +1,3 @@
-
 package dev.bpavuk.touche.ui.screens.settings
 
 import androidx.compose.animation.SharedTransitionLayout
@@ -38,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import dev.bpavuk.touche.R
 import dev.bpavuk.touche.ui.components.BackButton
 import dev.bpavuk.touche.ui.surfaces.Cloudy
@@ -88,14 +88,22 @@ fun ScreensaverSettingsScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(stringResource(R.string.screensaver))
-                },
-                navigationIcon = {
-                    BackButton(onBackPressed)
-                }
-            )
+            with(sharedTransitionScope) {
+                TopAppBar(
+                    title = {
+                        Text(stringResource(R.string.screensaver))
+                    },
+                    navigationIcon = {
+                        BackButton(onBackPressed)
+                    },
+                    modifier = Modifier.sharedBounds(
+                        sharedContentState = rememberSharedContentState(
+                            key = SHARED_TRANSITION_SCREENSAVER_SCREEN_ID
+                        ),
+                        animatedVisibilityScope = LocalNavAnimatedContentScope.current
+                    )
+                )
+            }
         }
     ) { paddingValues ->
         LazyVerticalGrid(
@@ -103,7 +111,8 @@ fun ScreensaverSettingsScreen(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(horizontal = 32.dp),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .padding(paddingValues)
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
