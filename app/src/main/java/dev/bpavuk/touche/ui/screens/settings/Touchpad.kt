@@ -1,5 +1,8 @@
 package dev.bpavuk.touche.ui.screens.settings
 
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -46,7 +49,8 @@ fun TouchpadScreen(
     onBackPressed: () -> Unit,
     onTouchpadToggle: (Boolean) -> Unit,
     touchpadEnabled: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    sharedTransitionScope: SharedTransitionScope
 ) {
     Scaffold(
         modifier = modifier,
@@ -125,12 +129,15 @@ fun TouchpadScreen(
 private fun TouchpadScreenPreview() {
     ToucheTheme(darkTheme = false) {
         var touchpadEnabled by remember { mutableStateOf(true) }
-        TouchpadScreen(
-            onBackPressed = {},
-            onTouchpadToggle = { touchpadEnabled = it },
-            touchpadEnabled = touchpadEnabled,
-            modifier = Modifier.fillMaxSize()
-        )
+        SharedTransitionLayout {
+            TouchpadScreen(
+                onBackPressed = {},
+                onTouchpadToggle = { touchpadEnabled = it },
+                touchpadEnabled = touchpadEnabled,
+                modifier = Modifier.fillMaxSize(),
+                sharedTransitionScope = this
+            )
+        }
     }
 }
 
@@ -140,11 +147,14 @@ private fun TouchpadScreenPreview() {
 private fun TouchpadScreenDarkPreview() {
     ToucheTheme(darkTheme = true) {
         var touchpadEnabled by remember { mutableStateOf(true) }
-        TouchpadScreen(
-            onBackPressed = {},
-            onTouchpadToggle = { touchpadEnabled = !it },
-            touchpadEnabled = touchpadEnabled,
-            modifier = Modifier.fillMaxSize()
-        )
+        SharedTransitionLayout {
+            TouchpadScreen(
+                onBackPressed = {},
+                onTouchpadToggle = { touchpadEnabled = !it },
+                touchpadEnabled = touchpadEnabled,
+                modifier = Modifier.fillMaxSize(),
+                sharedTransitionScope = this
+            )
+        }
     }
 }

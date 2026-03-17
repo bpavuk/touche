@@ -1,5 +1,7 @@
 package dev.bpavuk.touche.ui.screens.home
 
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,12 +27,15 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import dev.bpavuk.touche.R
 import dev.bpavuk.touche.ui.components.MenuEntry
 import dev.bpavuk.touche.ui.theme.ToucheTheme
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
+
+const val SHARED_TRANSITION_SETTINGS_SCREEN_ID = "settings-screen"
 
 @Composable
 fun TimeBasedGreeting(modifier: Modifier = Modifier) {
@@ -111,7 +116,8 @@ fun SettingsButton(
 @Composable
 fun HomeScreen(
     navigateToSettings: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    sharedTransitionScope: SharedTransitionScope
 ) {
     Scaffold(
         topBar = {
@@ -136,10 +142,20 @@ fun HomeScreen(
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(Modifier.size(32.dp))
-            SettingsButton(
-                navigateToSettings = navigateToSettings,
-                modifier = Modifier.clip(MaterialTheme.shapes.large)
-            )
+            with(sharedTransitionScope) {
+                SettingsButton(
+                    navigateToSettings = navigateToSettings,
+                    modifier = Modifier
+                        .sharedBounds(
+                            sharedContentState = rememberSharedContentState(
+                                SHARED_TRANSITION_SETTINGS_SCREEN_ID
+                            ),
+                            animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+                            resizeMode = SharedTransitionScope.ResizeMode.scaleToBounds()
+                        )
+                        .clip(MaterialTheme.shapes.large)
+                )
+            }
             Spacer(Modifier.weight(0.6f))
         }
     }
@@ -149,10 +165,13 @@ fun HomeScreen(
 @Composable
 fun HomeScreenPreview() {
     ToucheTheme(darkTheme = false) {
-        HomeScreen(
-            navigateToSettings = {},
-            modifier = Modifier.fillMaxSize()
-        )
+        SharedTransitionLayout {
+            HomeScreen(
+                navigateToSettings = {},
+                modifier = Modifier.fillMaxSize(),
+                sharedTransitionScope = this
+            )
+        }
     }
 }
 
@@ -160,10 +179,13 @@ fun HomeScreenPreview() {
 @Composable
 fun HomeScreenDarkPreview() {
     ToucheTheme(darkTheme = true) {
-        HomeScreen(
-            navigateToSettings = {},
-            modifier = Modifier.fillMaxSize()
-        )
+        SharedTransitionLayout {
+            HomeScreen(
+                navigateToSettings = {},
+                modifier = Modifier.fillMaxSize(),
+                sharedTransitionScope = this
+            )
+        }
     }
 }
 

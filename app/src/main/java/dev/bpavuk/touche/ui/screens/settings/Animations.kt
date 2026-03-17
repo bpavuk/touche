@@ -1,6 +1,8 @@
 
 package dev.bpavuk.touche.ui.screens.settings
 
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -78,7 +80,8 @@ fun ScreensaverSettingsScreen(
     onScreensaverChange: (Screensaver) -> Unit,
     screensaverEnabled: Boolean,
     screensaverAnimations: List<Screensaver>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    sharedTransitionScope: SharedTransitionScope
 ) {
     Scaffold(
         modifier = modifier,
@@ -193,14 +196,17 @@ private fun ScreensaverSettingsPreview() {
         var screensaverEnabled by remember { mutableStateOf(true) }
         var currentScreensaver by remember { mutableStateOf(Screensavers.cloudy) }
 
-        ScreensaverSettingsScreen(
-            onBackPressed = {},
-            onScreensaverToggle = { screensaverEnabled = it },
-            onScreensaverChange = { currentScreensaver = it },
-            screensaverEnabled = screensaverEnabled,
-            screensaverAnimations = Screensavers.all(),
-            modifier = Modifier.fillMaxSize()
-        )
+        SharedTransitionLayout {
+            ScreensaverSettingsScreen(
+                onBackPressed = {},
+                onScreensaverToggle = { screensaverEnabled = it },
+                onScreensaverChange = { currentScreensaver = it },
+                screensaverEnabled = screensaverEnabled,
+                screensaverAnimations = Screensavers.all(),
+                modifier = Modifier.fillMaxSize(),
+                sharedTransitionScope = this
+            )
+        }
     }
 }
 
@@ -212,13 +218,16 @@ private fun ScreensaverSettingsDarkPreview() {
         var screensaverEnabled by remember { mutableStateOf(true) }
         var currentScreensaver by remember { mutableStateOf(Screensavers.cloudy) }
 
-        ScreensaverSettingsScreen(
-            onBackPressed = {},
-            onScreensaverToggle = { screensaverEnabled = it },
-            onScreensaverChange = { currentScreensaver = it },
-            screensaverEnabled = screensaverEnabled,
-            screensaverAnimations = Screensavers.all(),
-            modifier = Modifier.fillMaxSize()
-        )
+        SharedTransitionLayout {
+            ScreensaverSettingsScreen(
+                onBackPressed = {},
+                onScreensaverToggle = { screensaverEnabled = it },
+                onScreensaverChange = { currentScreensaver = it },
+                screensaverEnabled = screensaverEnabled,
+                screensaverAnimations = Screensavers.all(),
+                modifier = Modifier.fillMaxSize(),
+                sharedTransitionScope = this
+            )
+        }
     }
 }

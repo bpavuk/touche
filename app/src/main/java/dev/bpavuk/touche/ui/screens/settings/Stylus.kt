@@ -1,5 +1,7 @@
 package dev.bpavuk.touche.ui.screens.settings
 
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -46,7 +48,8 @@ fun StylusScreen(
     onBackPressed: () -> Unit,
     onStylusToggle: (Boolean) -> Unit,
     stylusEnabled: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    sharedTransitionScope: SharedTransitionScope
 ) {
     Scaffold(
         modifier = modifier,
@@ -127,12 +130,15 @@ fun StylusScreen(
 private fun StylusScreenPreview() {
     ToucheTheme(darkTheme = false) {
         var stylusEnabled by remember { mutableStateOf(true) }
-        StylusScreen(
-            onBackPressed = {},
-            onStylusToggle = { stylusEnabled = it },
-            stylusEnabled = stylusEnabled,
-            modifier = Modifier.fillMaxSize()
-        )
+        SharedTransitionLayout {
+            StylusScreen(
+                onBackPressed = {},
+                onStylusToggle = { stylusEnabled = it },
+                stylusEnabled = stylusEnabled,
+                modifier = Modifier.fillMaxSize(),
+                sharedTransitionScope = this
+            )
+        }
     }
 }
 
@@ -142,11 +148,14 @@ private fun StylusScreenPreview() {
 private fun StylusScreenDarkPreview() {
     ToucheTheme(darkTheme = true) {
         var stylusEnabled by remember { mutableStateOf(true) }
-        StylusScreen(
-            onBackPressed = {},
-            onStylusToggle = { stylusEnabled = !it },
-            stylusEnabled = stylusEnabled,
-            modifier = Modifier.fillMaxSize()
-        )
+        SharedTransitionLayout {
+            StylusScreen(
+                onBackPressed = {},
+                onStylusToggle = { stylusEnabled = !it },
+                stylusEnabled = stylusEnabled,
+                modifier = Modifier.fillMaxSize(),
+                sharedTransitionScope = this
+            )
+        }
     }
 }
