@@ -28,5 +28,6 @@ devshell.mkShell {
     android-sdk
     gradle
     jdk17
+    kotlin-lsp
   ];
 }

@@ -6,9 +6,10 @@
     devshell.url = "github:numtide/devshell";
     flake-utils.url = "github:numtide/flake-utils";
     android.url = "github:tadfisher/android-nixpkgs";
+    kotlin-lsp.url = "git+https://tangled.org/bpavuk.neocities.org/kotlin-lsp-flake";
   };
 
-  outputs = { self, nixpkgs, devshell, flake-utils, android }:
+  outputs = { self, nixpkgs, devshell, flake-utils, android, kotlin-lsp }:
     {
       overlay = final: prev: {
         inherit (self.packages.${final.system}) android-sdk android-studio;
@@ -23,6 +24,7 @@
           config.allowUnfree = true;
           overlays = [
             devshell.overlays.default
+            kotlin-lsp.overlays.default
             self.overlay
           ];
         };
