@@ -1,7 +1,6 @@
 package dev.bpavuk.touche.ui.screens.onboarding
 
 import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -170,8 +169,7 @@ private data object DriverRoute : OnboardingRoute
 fun OnboardingScreen(
     onCompletion: () -> Unit,
     onDriverDownload: () -> Unit,
-    modifier: Modifier = Modifier,
-    sharedTransitionScope: SharedTransitionScope
+    modifier: Modifier = Modifier
 ) {
     val backStack = rememberNavBackStack(WelcomeRoute)
 
@@ -223,8 +221,7 @@ private fun OnboardingScreenPreview() {
             OnboardingScreen(
                 onCompletion = {},
                 onDriverDownload = {},
-                modifier = Modifier.fillMaxSize(),
-                sharedTransitionScope = this
+                modifier = Modifier.fillMaxSize()
             )
         }
     }

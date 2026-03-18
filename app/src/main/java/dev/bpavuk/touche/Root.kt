@@ -2,7 +2,6 @@ package dev.bpavuk.touche
 
 import android.content.Intent
 import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -18,18 +17,13 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
-import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import androidx.navigation3.ui.NavDisplay
 import dev.bpavuk.touche.data.persistence.OnboardingRepository
 import dev.bpavuk.touche.logic.settings.ScreensaverSettingsViewModelImpl
 import dev.bpavuk.touche.logic.settings.StylusSettingsViewModelImpl
 import dev.bpavuk.touche.logic.settings.TouchpadSettingsViewModelImpl
 import dev.bpavuk.touche.ui.screens.home.HomeScreen
-import dev.bpavuk.touche.ui.screens.home.SHARED_TRANSITION_SETTINGS_SCREEN_ID
 import dev.bpavuk.touche.ui.screens.onboarding.OnboardingScreen
-import dev.bpavuk.touche.ui.screens.settings.SHARED_TRANSITION_SCREENSAVER_SCREEN_ID
-import dev.bpavuk.touche.ui.screens.settings.SHARED_TRANSITION_STYLUS_SCREEN_ID
-import dev.bpavuk.touche.ui.screens.settings.SHARED_TRANSITION_TOUCHPAD_SCREEN_ID
 import dev.bpavuk.touche.ui.screens.settings.Screensaver
 import dev.bpavuk.touche.ui.screens.settings.ScreensaverSettingsScreen
 import dev.bpavuk.touche.ui.screens.settings.Screensavers
@@ -128,7 +122,6 @@ fun AppRoot(
                             }
                             context.startActivity(Intent.createChooser(shareIntent, null))
                         },
-                        sharedTransitionScope = this@SharedTransitionLayout,
                         modifier = Modifier.fillMaxSize(),
                     )
                 }

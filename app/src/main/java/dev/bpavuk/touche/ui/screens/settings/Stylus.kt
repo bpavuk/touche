@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import dev.bpavuk.touche.R
 import dev.bpavuk.touche.ui.components.BackButton
-import dev.bpavuk.touche.ui.screens.settings.SHARED_TRANSITION_STYLUS_SCREEN_ID
 import dev.bpavuk.touche.ui.theme.ToucheTheme
 import org.intellij.lang.annotations.Language
 
