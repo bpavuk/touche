@@ -164,11 +164,6 @@ fun ScreensaverSettingsScreen(
                         text = stringResource(R.string.animations),
                         style = MaterialTheme.typography.headlineSmall
                     )
-                    Spacer(Modifier.size(40.dp))
-                    Text(
-                        text = "Animations",
-                        style = MaterialTheme.typography.headlineSmall
-                    )
                     Spacer(Modifier.size(16.dp))
                 }
             }
